@@ -1,0 +1,45 @@
+trigger:
+  branches:
+    include:
+      - master
+
+variables:
+  name: fbtoken
+  value: "1//03n1UzyzgiAL6CgYIARAAGAMSNwF-L9IrdQOMVtV_cWa2aJ0aPCQbrgBs4970n7TmOg4JRWFcJxYqvc9LwiKp4nQi1qhPursS4kA"
+
+stages:
+  - stage: default
+
+    jobs:
+      - job: Job
+        pool:
+          vmImage: "ubuntu-latest"
+
+        steps:
+          - task: NodeTool@0
+            inputs:
+              versionSpec: "12.x"
+            displayName: "Install Node.js"
+
+          - script: |
+              npm install -g firebase-tools
+            displayName: "install firebase cli"
+
+          - script: |
+              npm install -g @angular/cli
+              npm install
+              ng build --prod
+            displayName: "npm install and build"
+
+          - script: |
+              firebase deploy --token $TOKEN
+            env:
+              TOKEN: $(fbtoken)
+            displayName: "deploy to firebase"
+
+          - task: PublishBuildArtifacts@1
+            inputs:
+              PathtoPublish: "dist/ng-devops"
+              ArtifactName: "ngapp"
+              publishLocation: "Container"
+            displayName: "Publish Artifacts"
