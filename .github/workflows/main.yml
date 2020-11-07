@@ -20,14 +20,11 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Lint
-        run: npm run lint
-
-      - name: Build
+      - name: Build Angular
         run: npm run build -- --prod
 
-      - name: Build & deploy
-        run: npm run deploy
+      - name: Deploy to Firebase
+        run: firebase deploy --token $FIREBASE_TOKEN
         env:
           CI: true
           FIREBASE_TOKEN: ${{ secrets.firebase_token }}
