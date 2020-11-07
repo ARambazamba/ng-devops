@@ -93,3 +93,5 @@ stages:
 Run & Check the pipeline:
 
 ![fb-token](_images/run-pipeline.png)
+
+## Using GitHub Actions
