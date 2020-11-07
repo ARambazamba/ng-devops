@@ -149,3 +149,42 @@ Persist the Firebase Token that you have claimed previously:
 ![token](_images/github-secret.jpg)
 
 Create a `main.yml` at `.github/workflows/`
+
+Add the yaml:
+
+```yaml
+name: Angular Simple CI-CD
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Use Node.js 12.8
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12.8
+
+      - name: Install Firebase CLI
+        run: npm install -g firebase-tools
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build Angular
+        run: npm run build -- --prod
+
+      - name: Deploy to Firebase
+        run: firebase deploy --token ${{ secrets.firebase_token }}
+        env:
+          CI: true
+          FIREBASE_TOKEN: ${{ secrets.firebase_token }}
+```
+
+That's it!
+
+!
