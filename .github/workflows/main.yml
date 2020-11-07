@@ -1,4 +1,4 @@
-name: CI
+name: CICD
 
 on: [push]
 
@@ -8,13 +8,26 @@ jobs:
 
     steps:
       - uses: actions/checkout@v1
+
       - name: Use Node.js 12.8
         uses: actions/setup-node@v1
         with:
           node-version: 12.8
+
+      - name: Install Firebase CLI
+        run: npm install firebase-tools
+
       - name: Install dependencies
         run: npm install
+
       - name: Lint
         run: npm run lint
+
       - name: Build
         run: npm run build -- --prod
+
+      - name: Build & deploy
+        run: npm run deploy
+        env:
+          CI: true
+          FIREBASE_TOKEN: ${{ secrets.firebase_token }}

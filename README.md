@@ -144,4 +144,8 @@ Run & Check the pipeline:
 
 [Workflow syntax for GitHub Actions](https://help.github.com/en/articles/workflow-syntax-for-github-actions)
 
+Persist the Firebase Token that you have claimed previously:
+
+![token](_images/github-secret.jpg)
+
 Create a `main.yml` at `.github/workflows/`
