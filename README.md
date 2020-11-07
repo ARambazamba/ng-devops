@@ -187,4 +187,4 @@ jobs:
 
 That's it!
 
-!
+![Github Actions](_images/github-cicd.jpg)
