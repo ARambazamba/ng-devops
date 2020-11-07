@@ -2,7 +2,29 @@
 
 Use [ng-devops Sample](https://github.com/ARambazamba/ng-devops)
 
-## Instructions
+## Firebase
+
+[Firebase CLI Reference](https://firebase.google.com/docs/cli)
+
+Install firebase cli:
+
+```
+npm install -g firebase-tools
+```
+
+Create a project & app
+
+```
+firebase login
+```
+
+![firebase-deploy](_images/firebase-deploy.png)
+
+List Projects:
+
+```
+firebase projects:list
+```
 
 Get Firebase CI Token:
 
@@ -14,13 +36,19 @@ Copy the token:
 
 ![fb-token](_images/fb-token.png)
 
-Create a `build-project.yml` and copy the following conten:
+## Using Azure DevOps
+
+Create a `azure-pipelines.yml` and copy the following conten:
 
 ```yml
 trigger:
   branches:
     include:
       - master
+
+variables:
+  name: fbtoken
+  value: "1//03n1UzyzgiAL6CgYIARAAGAMSNwF-L9IrdQOMVtV_cWa2aJ0aPCQbrgBs4970n7TmOg4JRWFcJxYqvc9LwiKp4nQi1qhPursS4kA"
 
 stages:
   - stage: default
@@ -36,7 +64,7 @@ stages:
               versionSpec: "12.x"
             displayName: "Install Node.js"
 
-          - bash: |
+          - script: |
               npm install -g firebase-tools
             displayName: "install firebase cli"
 
@@ -47,8 +75,17 @@ stages:
             displayName: "npm install and build"
 
           - script: |
-              firebase deploy --token '1//03n1UzyzgiAL6CgYIARAAGAMSNwF-L9IrdQOMVtV_cWa2aJ0aPCQbrgBs4970n7TmOg4JRWFcJxYqvc9LwiKp4nQi1qhPursS4kA'
+              firebase deploy --token $TOKEN
+            env:
+              TOKEN: $(fbtoken)
             displayName: "deploy to firebase"
+
+          - task: PublishBuildArtifacts@1
+            inputs:
+              PathtoPublish: "dist/ng-devops"
+              ArtifactName: "ngapp"
+              publishLocation: "Container"
+            displayName: "Publish Artifacts"
 ```
 
 > Note: In real life you would get the token from a Key Vault and access it using a variable
