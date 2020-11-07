@@ -2,7 +2,7 @@
 
 Use [ng-devops Sample](https://github.com/ARambazamba/ng-devops)
 
-## Firebase
+## Setup Firebase Hosting
 
 [Firebase CLI Reference](https://firebase.google.com/docs/cli)
 
@@ -18,12 +18,56 @@ Create a project & app
 firebase login
 ```
 
+Initialize Project using `firebase init`:
+
 ![firebase-deploy](_images/firebase-deploy.png)
+
+Your config is saved to this files:
+
+`.firebaserc`:
+
+```json
+{
+  "projects": {
+    "default": "ng-devops"
+  }
+}
+```
+
+`firebase.json`:
+
+```json
+{
+  "hosting": {
+    "public": "dist/ng-devops",
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}
+```
 
 List Projects:
 
 ```
 firebase projects:list
+```
+
+Switch the Firebase Project:
+
+```
+firebase use ng-devops-4589a
+```
+
+Deploy manually:
+
+```
+ng build --prod
+firebase deploy
 ```
 
 Get Firebase CI Token:
@@ -95,3 +139,9 @@ Run & Check the pipeline:
 ![fb-token](_images/run-pipeline.png)
 
 ## Using GitHub Actions
+
+[About GitHub Actions](https://help.github.com/en/articles/about-github-actions)
+
+[Workflow syntax for GitHub Actions](https://help.github.com/en/articles/workflow-syntax-for-github-actions)
+
+Create a `main.yml` at `.github/workflows/`
