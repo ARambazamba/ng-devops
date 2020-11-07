@@ -24,7 +24,7 @@ jobs:
         run: npm run build -- --prod
 
       - name: Deploy to Firebase
-        run: firebase deploy --token FIREBASE_TOKEN
+        run: firebase deploy --token "$FIREBASE_TOKEN"
         env:
           CI: true
           FIREBASE_TOKEN: ${{ secrets.firebase_token }}
